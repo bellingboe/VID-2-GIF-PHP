@@ -41,6 +41,11 @@ if (!$_POST) {
     && */in_array($extension, $allowedExts)
     ) {
         if ($_FILES["file"]["error"] > 0) {
+            
+            echo "<pre>";
+            var_dump($_FILES["file"]);
+            echo "</pre>";
+            
             echo "Return Code: " . $_FILES["file"]["error"] . "<br />";
         } else {
             echo "Upload: " . $_FILES["file"]["name"] . "<br />";
