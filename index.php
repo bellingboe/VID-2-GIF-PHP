@@ -36,6 +36,7 @@ if (!$_POST) {
             || ($_FILES["file"]["type"] == "video/3gpp")
             || ($_FILES["file"]["type"] == "video/quicktime")
             || ($_FILES["file"]["type"] == "video/x-msvideo")
+            || ($_FILES["file"]["type"] == "video/avi")
             || ($_FILES["file"]["type"] == "video/x-ms-wmv")
         )
     && in_array($extension, $allowedExts)
