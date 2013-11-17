@@ -16,6 +16,8 @@ if (!$_POST) {
     
         <form method='POST' name='uploadform' enctype='multipart/form-data' action=''>
             <input type='file' name='file'><br>
+            <input type="hidden" name="fd" value="1">
+            <input type="hidden" name="fps" value="15">
             <input type='submit' name='cmdSubmit' value='Upload'>
         </form>
     
@@ -24,7 +26,9 @@ if (!$_POST) {
 
 <?php
 } else {
-
+    $FRAME_DELAY = $_POST['fd'];
+    $FPS= $_POST['fps'];
+    
     $allowedExts = array("flv", "mp4", "m3u8", "ts", "3gp", "mov", "avi", "wmv");
     $extension = end(explode(".", $_FILES["file"]["name"]));
     if (
@@ -94,7 +98,7 @@ if (!$_POST) {
             move_uploaded_file($_FILES["file"]["tmp_name"], $stored_name);
             //echo "Stored in: " . $stored_name;
                         
-            $vid_to_frames = system('ffmpeg -i '.$dir.'/'.$stored_name.' -f image2 -vf fps=fps=60 '.$dir.'/'.$session_path.'/%d.png', $ret);
+            $vid_to_frames = system('ffmpeg -i '.$dir.'/'.$stored_name.' -f image2 -vf fps=fps='.$FPS.' '.$dir.'/'.$session_path.'/%d.png', $ret);
             
             unlink($stored_name);
             
@@ -105,7 +109,7 @@ if (!$_POST) {
                 if ( $s != "." && $s != ".." ) {
                         $fn = ImageTools::toGif("$session_path/$s");
                         $frames [ ] = $fn;
-                        $framed [ ] = 0;
+                        $framed [ ] = $FRAME_DELAY;
                 }
             }
             
