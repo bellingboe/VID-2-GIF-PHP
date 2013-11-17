@@ -49,7 +49,7 @@ if (!$_POST) {
                 break;
             case UPLOAD_ERR_INI_SIZE:
             case UPLOAD_ERR_FORM_SIZE:
-                $message .= ' - file too large (limit of '.get_max_upload().' bytes).';
+                $message .= ' - file too large (limit of '.ini_get('post_max_size').' bytes).';
                 $err = true;
                 break;
             case UPLOAD_ERR_PARTIAL:
@@ -71,7 +71,7 @@ if (!$_POST) {
             var_dump($_FILES["file"]);
             echo "</pre>";
             
-            echo "Return Code: " . $_FILES["file"]["error"] . "<br />";
+            echo "Message: " . $message . "<br />";
         } else {
             echo "Upload: " . $_FILES["file"]["name"] . "<br />";
             echo "Type: " . $_FILES["file"]["type"] . "<br />";
