@@ -118,7 +118,7 @@ if (!$_POST) {
             
             fwrite(fopen($gif_name, "wb"), $gif->GetAnimation());
             
-            foreach ($sd as $s) {
+            foreach ($frames as $s) {
                 if ( $s != "." && $s != ".." ) {
                     unlink("$session_path/$s");
                 }
