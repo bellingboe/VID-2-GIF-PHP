@@ -28,7 +28,7 @@ if (!$_POST) {
     $allowedExts = array("flv", "mp4", "m3u8", "ts", "3gp", "mov", "avi", "wmv");
     $extension = end(explode(".", $_FILES["file"]["name"]));
     if (
-        /*(
+        (
             ($_FILES["file"]["type"] == "video/x-flv")
             || ($_FILES["file"]["type"] == "video/mp4")
             || ($_FILES["file"]["type"] == "application/x-mpegURL")
@@ -38,7 +38,7 @@ if (!$_POST) {
             || ($_FILES["file"]["type"] == "video/x-msvideo")
             || ($_FILES["file"]["type"] == "video/x-ms-wmv")
         )
-    && */in_array($extension, $allowedExts)
+    && in_array($extension, $allowedExts)
     ) {
         
         $err = false;
@@ -73,24 +73,25 @@ if (!$_POST) {
             
             echo "Message: " . $message . "<br />";
         } else {
-            echo "Upload: " . $_FILES["file"]["name"] . "<br />";
-            echo "Type: " . $_FILES["file"]["type"] . "<br />";
-            echo "Size: " . ($_FILES["file"]["size"] / 1024) . " Kb<br />";
-            echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br />";
+            //echo "Upload: " . $_FILES["file"]["name"] . "<br />";
+            //echo "Type: " . $_FILES["file"]["type"] . "<br />";
+            //echo "Size: " . ($_FILES["file"]["size"] / 1024) . " Kb<br />";
+            //echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br />";
             
             $file = time()."_".$_FILES["file"]["name"];
             
             $session_id = sha1($file);
             $session_path = "upload/" . $session_id;
             $stored_name = $session_path . "/" . $file;
-            $gif_name = $session_id.".gif";
+            $gif_id = $session_id;
+            $gif_name = $gif_id.".gif";
             
             $dir = getcwd();
             
             mkdir($session_path);
 
             move_uploaded_file($_FILES["file"]["tmp_name"], $stored_name);
-            echo "Stored in: " . $stored_name;
+            //echo "Stored in: " . $stored_name;
                         
             $vid_to_frames = system('ffmpeg -i '.$dir.'/'.$stored_name.' -f image2 -vf fps=fps=1*20 '.$dir.'/'.$session_path.'/%d.png', $ret);
             
@@ -126,7 +127,9 @@ if (!$_POST) {
             
             rmdir($session_path);
             
-            echo "<img src='$gif_name'>";
+            echo "<p><a href='?'>&laquo; Back</a></p>";
+            echo "<p><img src='/g/$gif_id'></p>";
+            echo "<br><br>";
 
         }
     } else {

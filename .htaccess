@@ -1,0 +1,3 @@
+RewriteEngine on
+
+RewriteRule ^g/([A-Za-z0-9]+)$ PHP-VIDGIF/$1.gif
