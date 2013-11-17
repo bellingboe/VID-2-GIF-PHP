@@ -40,8 +40,33 @@ if (!$_POST) {
         )
     && */in_array($extension, $allowedExts)
     ) {
-        if ($_FILES["file"]["error"] > 0) {
-            
+        
+        $err = false;
+        
+        switch( $_FILES['file']['error'] ) {
+            case UPLOAD_ERR_OK:
+                $message = false;
+                break;
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                $message .= ' - file too large (limit of '.get_max_upload().' bytes).';
+                $err = true;
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                $message .= ' - file upload was not completed.';
+                $err = true;
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                $message .= ' - zero-length file uploaded.';
+                $err = true;
+                break;
+            default:
+                $message .= ' - internal error #'.$_FILES['file']['error'];
+                $err = true;
+                break;
+        }
+        
+        if ($err) {
             echo "<pre>";
             var_dump($_FILES["file"]);
             echo "</pre>";
