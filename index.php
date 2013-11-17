@@ -94,7 +94,7 @@ if (!$_POST) {
             move_uploaded_file($_FILES["file"]["tmp_name"], $stored_name);
             //echo "Stored in: " . $stored_name;
                         
-            $vid_to_frames = system('ffmpeg -i '.$dir.'/'.$stored_name.' -f image2 -vf fps=fps=1*30 '.$dir.'/'.$session_path.'/%d.png', $ret);
+            $vid_to_frames = system('ffmpeg -i '.$dir.'/'.$stored_name.' -f image2 -vf fps=fps=60 '.$dir.'/'.$session_path.'/%d.png', $ret);
             
             unlink($stored_name);
             
@@ -105,7 +105,7 @@ if (!$_POST) {
                 if ( $s != "." && $s != ".." ) {
                         $fn = ImageTools::toGif("$session_path/$s");
                         $frames [ ] = $fn;
-                        $framed [ ] = 1;
+                        $framed [ ] = 0;
                 }
             }
             
