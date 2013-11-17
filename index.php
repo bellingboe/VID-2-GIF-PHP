@@ -62,7 +62,7 @@ if (!$_POST) {
             move_uploaded_file($_FILES["file"]["tmp_name"], $stored_name);
             echo "Stored in: " . $stored_name;
                         
-            $vid_to_frames = system('C:/ffmpeg/bin/ffmpeg -i '.$dir.'/'.$stored_name.' -f image2 -vf fps=fps=1 '.$dir.'/'.$session_path.'/%d.png', $ret);
+            $vid_to_frames = system('ffmpeg -i '.$dir.'/'.$stored_name.' -f image2 -vf fps=fps=1 '.$dir.'/'.$session_path.'/%d.png', $ret);
             
             unlink($stored_name);
             
