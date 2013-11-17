@@ -120,7 +120,7 @@ if (!$_POST) {
             
             foreach ($frames as $s) {
                 if ( $s != "." && $s != ".." ) {
-                    unlink("$session_path/$s");
+                    unlink("$s");
                 }
             }
             
