@@ -94,8 +94,8 @@ if (!$_POST) {
             mkdir($session_path);
             move_uploaded_file($_FILES["file"]["tmp_name"], $stored_name);
                         
-            $comm1 = "convert -quiet -delay 1 $stored_name -ordered-dither o8x8,8,8,4 +map $gif_path";
-            $comm2 = "convert $gif_path  -layers OptimizeTransparency +map $gif_path";
+            $comm1 = "/usr/bin/convert -quiet -delay 1 $stored_name -ordered-dither o8x8,8,8,4 +map $gif_path";
+            $comm2 = "/usr/bin/convert $gif_path  -layers OptimizeTransparency +map $gif_path";
                         
             exec($comm1, $ret1);
             exec($comm2, $ret2);
