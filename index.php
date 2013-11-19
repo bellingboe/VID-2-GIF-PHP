@@ -92,7 +92,7 @@ if (!$_POST) {
             $session_path = "upload/" . $session_id;
             $stored_name = $session_path . "/" . $file;
             $gif_id = $session_id;
-            $gif_name = $gif_id.".gif";
+            $gif_name = $session_path . "/" . $gif_id.".gif";
             
             $dir = getcwd();
             mkdir($session_path);
