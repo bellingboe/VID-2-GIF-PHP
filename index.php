@@ -98,7 +98,7 @@ if (!$_POST) {
             $gif_compress = system('convert '.$gif_path.'  -layers OptimizeTransparency +map '.$gif_path, $ret2);
 
             unlink($stored_name);
-\
+
             echo "<p><img src='/g/$session_id.gif'></p>";
             echo "<br><br>";
 
