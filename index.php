@@ -141,7 +141,7 @@ if (!$_POST) {
             
             //rmdir($session_path);
             
-            echo "<p><img src='/g/$session_id'></p>";
+            echo "<p><img src='/g/$session_id.gif'></p>";
             echo "<br><br>";
 
         }
