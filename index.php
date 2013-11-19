@@ -26,6 +26,9 @@ if (!$_POST) {
 
 <?php
 } else {
+    
+    echo "<p><a href='?'>&laquo; Back</a></p>";
+    
     $FRAME_DELAY = $_POST['fd'];
     $FPS= $_POST['fps'];
     
@@ -92,12 +95,16 @@ if (!$_POST) {
             $gif_name = $gif_id.".gif";
             
             $dir = getcwd();
-            
             mkdir($session_path);
-
             move_uploaded_file($_FILES["file"]["tmp_name"], $stored_name);
-            //echo "Stored in: " . $stored_name;
                         
+            $vid_to_gif = system('convert -quiet -delay 1 '.$dir.'/'.$stored_name.' -ordered-dither o8x8,23 +map '.$dir.'/'.$gif_name, $ret);
+            
+            $gif_compress = system('convert '.$dir.'/'.$gif_name.'  -layers OptimizeTransparency +map '.$dir.'/'.$gif_name, $ret2);
+
+            unlink($stored_name);
+            
+            /*  
             $vid_to_frames = system('ffmpeg -i '.$dir.'/'.$stored_name.' -f image2 -vf fps=fps='.$FPS.' '.$dir.'/'.$session_path.'/%d.png', $ret);
             
             unlink($stored_name);
@@ -130,9 +137,10 @@ if (!$_POST) {
                 }
             }
             
-            rmdir($session_path);
+            */
             
-            echo "<p><a href='?'>&laquo; Back</a></p>";
+            //rmdir($session_path);
+            
             echo "<p><img src='/g/$gif_id'></p>";
             echo "<br><br>";
 
