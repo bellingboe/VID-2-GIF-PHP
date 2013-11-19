@@ -81,11 +81,7 @@ if (!$_POST) {
             
             echo "Message: " . $message . "<br />";
         } else {
-            //echo "Upload: " . $_FILES["file"]["name"] . "<br />";
-            //echo "Type: " . $_FILES["file"]["type"] . "<br />";
-            //echo "Size: " . ($_FILES["file"]["size"] / 1024) . " Kb<br />";
-            //echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br />";
-            
+\
             $file = time()."_".$_FILES["file"]["name"];
             $dir = getcwd();
             $session_id = sha1($file);
@@ -103,44 +99,7 @@ if (!$_POST) {
             $gif_compress = system('convert '.$gif_path.'  -layers OptimizeTransparency +map '.$gif_path, $ret2);
 
             unlink($stored_name);
-            
-            /*  
-            $vid_to_frames = system('ffmpeg -i '.$dir.'/'.$stored_name.' -f image2 -vf fps=fps='.$FPS.' '.$dir.'/'.$session_path.'/%d.png', $ret);
-            
-            unlink($stored_name);
-            
-            $sd = scandir ("$session_path/");
-            natsort($sd);
-            
-            foreach ($sd as $s) {
-                if ( $s != "." && $s != ".." ) {
-                        $fn = ImageTools::toGif("$session_path/$s");
-                        $frames [ ] = $fn;
-                        $framed [ ] = $FRAME_DELAY;
-                }
-            }
-            
-            $gif = new GIFEncoder (
-                $frames,
-                $framed,
-                0,
-                2,
-                0, 0, 0,
-                "url"
-            );
-            
-            fwrite(fopen($gif_name, "wb"), $gif->GetAnimation());
-            
-            foreach ($frames as $s) {
-                if ( $s != "." && $s != ".." ) {
-                    unlink("$s");
-                }
-            }
-            
-            */
-            
-            //rmdir($session_path);
-            
+\
             echo "<p><img src='/g/$session_id.gif'></p>";
             echo "<br><br>";
 
