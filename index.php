@@ -94,7 +94,7 @@ if (!$_POST) {
             mkdir($session_path);
             move_uploaded_file($_FILES["file"]["tmp_name"], $stored_name);
                         
-            $comm1 = "/usr/bin/convert -delay 1 $stored_name $gif_path";
+            $comm1 = "/usr/bin/convert $stored_name $gif_path";
             $comm2 = "/usr/bin/convert $gif_path  -layers OptimizeTransparency +map opt_$gif_path";
                         
             exec($comm1, $ret1);
