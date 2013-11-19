@@ -97,13 +97,27 @@ if (!$_POST) {
             $comm1 = "convert -quiet -delay 1 $stored_name -ordered-dither o8x8,8,8,4 +map $gif_path";
             $comm2 = "convert $gif_path  -layers OptimizeTransparency +map $gif_path";
                         
-            exec($comm1);
-            exec($comm2);
+            exec($comm1, $ret1);
+            exec($comm2, $ret2);
 
             //unlink($stored_name);
             
             echo $comm1."<br>";
             echo $comm2."<br>";
+            
+            echo "<hr>";
+            
+            foreach ($ret1 as $val){
+                echo "<br/>".$val;
+            }
+            
+            echo "<br><br>";
+            
+            foreach ($ret2 as $val){
+               echo "<br/>".$val;
+            }
+            
+            echo "<hr>";
 
             echo "<p><img src='/g/$session_id.gif'></p>";
             echo "<br><br>";
