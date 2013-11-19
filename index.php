@@ -94,10 +94,16 @@ if (!$_POST) {
             mkdir($session_path);
             move_uploaded_file($_FILES["file"]["tmp_name"], $stored_name);
                         
-            $vid_to_gif = exec("convert -quiet -delay 1 $stored_name -ordered-dither o8x8,8,8,4 +map $gif_path");
-            $gif_compress = exec("convert $gif_path  -layers OptimizeTransparency +map $gif_path");
+            $comm1 = "convert -quiet -delay 1 $stored_name -ordered-dither o8x8,8,8,4 +map $gif_path";
+            $comm2 = "convert $gif_path  -layers OptimizeTransparency +map $gif_path"
+                        
+            $vid_to_gif = exec($comm1);
+            $gif_compress = exec($comm2);
 
-            unlink($stored_name);
+            //unlink($stored_name);
+            
+            echo $comm1."<br>";
+            echo $comm2."<br>";
 
             echo "<p><img src='/g/$session_id.gif'></p>";
             echo "<br><br>";
