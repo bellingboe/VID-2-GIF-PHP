@@ -87,20 +87,20 @@ if (!$_POST) {
             //echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br />";
             
             $file = time()."_".$_FILES["file"]["name"];
-            
-            $session_id = sha1($file);
-            $session_path = "upload/" . $session_id;
-            $stored_name = $session_path . "/" . $file;
-            $gif_id = $session_id;
-            $gif_name = $session_path . "/" . $gif_id.".gif";
-            
             $dir = getcwd();
+            $session_id = sha1($file);
+            
+            $session_path = "$dir/upload/$session_id";
+            
+            $gif_path = "$session_path/$session_id.gif";
+            $stored_name = "$session_path/$file";
+            
             mkdir($session_path);
             move_uploaded_file($_FILES["file"]["tmp_name"], $stored_name);
                         
-            $vid_to_gif = system('convert -quiet -delay 1 '.$dir.'/'.$stored_name.' -ordered-dither o8x8,23 +map '.$dir.'/'.$gif_name, $ret);
+            $vid_to_gif = system('convert -quiet -delay 1 '.$stored_name.' -ordered-dither o8x8,23 +map '.$gif_path, $ret);
             
-            $gif_compress = system('convert '.$dir.'/'.$gif_name.'  -layers OptimizeTransparency +map '.$dir.'/'.$gif_name, $ret2);
+            $gif_compress = system('convert '.$gif_path.'  -layers OptimizeTransparency +map '.$gif_path, $ret2);
 
             unlink($stored_name);
             
@@ -141,7 +141,7 @@ if (!$_POST) {
             
             //rmdir($session_path);
             
-            echo "<p><img src='/g/$gif_id'></p>";
+            echo "<p><img src='/g/$session_id'></p>";
             echo "<br><br>";
 
         }
