@@ -81,7 +81,7 @@ if (!$_POST) {
             
             echo "Message: " . $message . "<br />";
         } else {
-\
+
             $file = time()."_".$_FILES["file"]["name"];
             $dir = getcwd();
             $session_id = sha1($file);
