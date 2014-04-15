@@ -42,6 +42,19 @@ if (!$_POST) {
     && in_array($extension, $allowedExts)
     ) {
         
+        ?>
+        
+    <!doctype>
+    <html>
+        <head>
+            <title>
+                VIDGIF
+            </title>
+        </head>
+        <body>
+        
+        <?php
+        
         $err = false;
         
         switch( $_FILES['file']['error'] ) {
@@ -137,6 +150,7 @@ if (!$_POST) {
         var_dump($_FILES);
         echo "Invalid file";
     }
-  
+
+    echo "</body></html>";
 
 }
