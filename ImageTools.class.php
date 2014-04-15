@@ -1,5 +1,7 @@
 <?php
 
+set_time_limit(0);
+
 class ImageTools {
     
     public static function toGif($source_file) {
