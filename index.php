@@ -16,8 +16,6 @@ if (!$_POST) {
     
         <form method='POST' name='uploadform' enctype='multipart/form-data' action=''>
             <input type='file' name='file'><br>
-            <input type="hidden" name="fd" value="1">
-            <input type="hidden" name="fps" value="15">
             <input type='submit' name='cmdSubmit' value='Upload'>
         </form>
     
@@ -26,12 +24,7 @@ if (!$_POST) {
 
 <?php
 } else {
-    
-    echo "<p><a href='?'>&laquo; Back</a></p>";
-    
-    $FRAME_DELAY = $_POST['fd'];
-    $FPS= $_POST['fps'];
-    
+
     $allowedExts = array("flv", "mp4", "m3u8", "ts", "3gp", "mov", "avi", "wmv");
     $extension = end(explode(".", $_FILES["file"]["name"]));
     if (
@@ -81,58 +74,69 @@ if (!$_POST) {
             
             echo "Message: " . $message . "<br />";
         } else {
-
-            $file = md5(time()).".".$extension;
-            $dir = getcwd();
+            //echo "Upload: " . $_FILES["file"]["name"] . "<br />";
+            //echo "Type: " . $_FILES["file"]["type"] . "<br />";
+            //echo "Size: " . ($_FILES["file"]["size"] / 1024) . " Kb<br />";
+            //echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br />";
+            
+            $file = time()."_".$_FILES["file"]["name"];
+            
             $session_id = sha1($file);
+            $session_path = "upload/" . $session_id;
+            $stored_name = $session_path . "/" . $file;
+            $gif_id = $session_id;
+            $gif_name = $gif_id.".gif";
             
-            $session_path = "$dir/upload/$session_id";
-            
-            $gif_path = "$session_path/$session_id.gif";
-            $stored_name = "$session_path/$file";
+            $dir = getcwd();
             
             mkdir($session_path);
+
             move_uploaded_file($_FILES["file"]["tmp_name"], $stored_name);
+            //echo "Stored in: " . $stored_name;
                         
-            $comm0 = "/usr/bin/convert -resize '300' $stored_name";
-            $comm1 = "/usr/bin/convert $stored_name $gif_path";
-            $comm2 = "/usr/bin/convert $gif_path  -layers OptimizeTransparency +map opt_$gif_path";
-                        
-            exec($comm0, $ret0);
-            exec($comm1, $ret1);
-            exec($comm2, $ret2);
+            $vid_to_frames = system('ffmpeg -i '.$dir.'/'.$stored_name.' -f image2 -vf fps=fps=1*20 '.$dir.'/'.$session_path.'/%d.png', $ret);
+            
+            unlink($stored_name);
+            
+            $sd = scandir ("$session_path/");
+            natsort($sd);
+            
+            foreach ($sd as $s) {
+                if ( $s != "." && $s != ".." ) {
+                        $fn = ImageTools::toGif("$session_path/$s");
+                        $frames [ ] = $fn;
+                        $framed [ ] = 10;
+                }
+            }
+            
+            $gif = new GIFEncoder (
+                $frames,
+                $framed,
+                0,
+                2,
+                0, 0, 0,
+                "url"
+            );
+            
+            fwrite(fopen($gif_name, "wb"), $gif->GetAnimation());
+            
+            foreach ($frames as $s) {
+                if ( $s != "." && $s != ".." ) {
+                    unlink("$s");
+                }
+            }
+            
+            rmdir($session_path);
+            
+            echo "<p><a href='?'>&laquo; Back</a></p>";
+            echo "<p><img src='/g/$gif_id'></p>";
+            echo "<br><br>";
 
-            //unlink($stored_name);
-            
-            echo $comm1."<br>";
-            echo $comm2."<br>";
-            
-            echo "<hr>";
-            
-            foreach ($ret0 as $val){
-                echo "<br/>".$val;
-            }
-            
-            echo "<br><br>";
-            
-            foreach ($ret1 as $val){
-                echo "<br/>".$val;
-            }
-            
-            echo "<br><br>";
-            
-            foreach ($ret2 as $val){
-               echo "<br/>".$val;
-            }
-            
-            echo "<hr>";
-
-            echo "<p><img src='/g/$session_id.gif'></p>";
-            echo "<br><br>";
         }
     } else {
         var_dump($_FILES);
         echo "Invalid file";
     }
   
+
 }
