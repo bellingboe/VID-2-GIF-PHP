@@ -122,7 +122,7 @@ if (!$_POST) {
                 if ( $s != "." && $s != ".." ) {
                         $fn = ImageTools::toGif("$session_path/$s");
                         $frames [ ] = $fn;
-                        $framed [ ] = 2;
+                        $framed [ ] = 5;
                 }
             }
             
