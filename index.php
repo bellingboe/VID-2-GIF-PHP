@@ -142,7 +142,7 @@ if (!$_POST) {
             rmdir($session_path);
             
             echo "<p><a href='?'>&laquo; Back</a></p>";
-            echo "<p><img src='/g/$gif_id'></p>";
+            echo "<p><img src='$gif_id.gif'></p>";
             echo "<br><br>";
 
         }
